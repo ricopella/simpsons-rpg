@@ -57,12 +57,21 @@ var playerFour = {
 
 
 var startGame = function() {
-
+    var chosenCharecter = false;
+    var enemies = false;
+    var chosenEnemy = false;
     // click event when selecting your character
     $('.boxDescription').click(function() {
         // when character is selected 1. move to player-area 2. change bg to black
-        $(this).appendTo("#player-area");
-        $(this).css({ "background-color": "black", "color": "white" });
+        var $this = $(this);
+
+        $this.addClass('selected');
+        if (chosenCharacter === true) {
+            $(this).appendTo("#player-area");
+            $(this).css({ "background-color": "black", "color": "white" });
+        } else {
+            $('.boxDescription').appendTo("#enemies-attack");
+        }
 
         // other 3 characters move to enemies-section
 
