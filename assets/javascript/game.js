@@ -13,17 +13,18 @@
 // HP i showen at bottom of players images
 
 // When defenders HP is <= 0, remove from defender area, players chooses next opponent
-// player must defeat all opponents
+// player must defeat all 3 opponents to win
 
 // if player HP is <= 0, lose game
 
 
 // Global Variables
 
-var charHp = 0;
-var enemHp = 0;
 var character = "";
-
+var yourDefender = "";
+var defeatedCount = 0;
+var yourCharacter = "";
+var yourEnemies = false;
 
 // Character Objects stored into array
 
@@ -60,17 +61,6 @@ characterOptions = [
     }
 ]
 
-// for storing character details
-// $('.characterOne').data('stats', playerOne);
-// var playerStats = $('.characterOne').data('stats'); // playerOne
-// var playerHealth = $('.characterOne').data('stats').hp; // playerOne.hp
-
-
-var yourCharacter = "";
-var yourEnemies = false;
-var yourDefender = "";
-
-
 var startGame = function() {
 
     // click event when selecting your character
@@ -82,11 +72,11 @@ var startGame = function() {
         $(this).appendTo("#player-area");
         // store your character object data
         yourCharacter = characterOptions[$this.data('player') - 1];
-        console.log("work? " + yourCharacter.name);
-
+        console.log("Your Character " + yourCharacter.name);
         // other 3 characters move to enemies-section
         $('.boxDescription:not(.selected)').appendTo("#enemies-attack");
 
+        // event handler for choosing yourDefender
         $('.unselected').click(function() {
             $('#enemies-attack').addClass('defender');
             // move enemy to #enemies-attack
@@ -94,12 +84,8 @@ var startGame = function() {
             // store defender object data
             yourDefender = characterOptions[$('.unselected').data('player') - 1];
             console.log('your opponent: ' + yourDefender.name);
-        });
-
-    }); // end character click
-
-    // choose 1 of 3 for 1st enemy
-
+        }); // end choosing yourDefender
+    }); // end choosing yourCharacter & yourDefender
 
     // attack button function
     $(".btn-danger").click(function(yourCharacter, yourDefender) {
@@ -107,40 +93,33 @@ var startGame = function() {
         var attacksIncrement = yourCharacter.numberOfAttacks++;
         var attackPowerIncrement = attacksIncrement * yourCharacter.attackPower;
         yourDefender.hp -= attackPowerIncrement;
-        yourDefender.element.find('hp').html(yourDefender.hp);
-
-
 
         // decrement enemy hp by attackPower
         yourCharacterhp = yourCharacter.hp - yourDefender.attackPower;
         yourDefenderhp = yourDefender.hp - yourCharacter.attackPower;
         console.log("your HP: " + yourCharacterhp + " your defender HP: " + yourDefenderhp);
+
+        // if defender hp <= 0 - remove from fight-section, add to defeatedCount
+        if (yourDefender.hp <= 0) {
+            yourDefender.element.hide();
+            defeatedCount++;
+
+            //  if all 3 defenders are beat, Win!
+            if (defeatedCount === 3) {
+                alert("You won!");
+            }
+        } else {
+            yourCharacter.hp -= yourDefender.counterAttackPower;
+            yourCharacter.find('hp').html(yourCharacter.hp);
+        };
+
     });
-    // increment attackPower by original attackPower each time attacking
-
-    // decremeant player hp by enemy attackPower
-
-
-    // })
-
-    // function for next enemy
-
-    // if player hp <= 0 - lose game
-
-    // if enemy 1 hp <= 0, remove from game, player hp stays in memory
-    // player chooses next opponent
-    // if enemy 2 hp <= 0, remove from game, player hp stays in memory
-    // player choses final opponent
-    // if final enemy <= 0, you win!
 
 }; // end startGame()
-
-
 
 // starts game at page load
 $(document).ready(function() {
 
     startGame();
 
-    // end document.ready()
-});
+}); // end document.ready()
