@@ -54,6 +54,15 @@ var playerFour = {
     counterAttack: 15,
 }
 
+//  for storing character details
+// $('.characterOne').data('stats', playerOne);
+// var playerStats = $('.characterOne').data('stats'); // playerOne
+// var playerHealth = $('.characterOne').data('stats').hp; // playerOne.hp
+
+
+var yourCharacter = false;
+var yourEnemies = false;
+var yourDefender = false;
 
 
 var startGame = function() {
@@ -66,35 +75,39 @@ var startGame = function() {
         var $this = $(this);
 
         $this.addClass('selected');
-        if (chosenCharacter === true) {
-            $(this).appendTo("#player-area");
-            $(this).css({ "background-color": "black", "color": "white" });
-        } else {
-            $('.boxDescription').appendTo("#enemies-attack");
-        }
+        $this.removeClass('unselected');
+        $(this).appendTo("#player-area");
+        chosenCharacter = true;
 
         // other 3 characters move to enemies-section
+        $('.boxDescription:not(.selected)').appendTo("#enemies-attack");
 
         // choose 1 of 3 for 1st enemy
+        $('.unselected').click(function() {
+            $(this).addClass('defender');
+            // move enemy to #enemies-attack
+            $(this).appendTo('#fight-section');
+            chosenEnemy = true;
+        })
 
-        // move enemy to #enemies-attack
+
 
     });
 
-    // add remaining characters to enemies-attack area
-    $('.boxDescription').click(function() {
-        $(!this).appendTo("#enemies-attack");
-    })
+    // // add remaining characters to enemies-attack area
+    // $('.boxDescription').click(function() {
+    //     $(!this).appendTo("#enemies-attack");
+    // })
 
-    // attack button function
-    $(".btn-danger").click(function() {
-        // decrement enemy hp by attackPower
-        // increment attackPower by original attackPower each time attacking
+    // // attack button function
+    // $(".btn-danger").click(function() {
+    //     // decrement enemy hp by attackPower
+    //     // increment attackPower by original attackPower each time attacking
 
-        // decremeant player hp by enemy attackPower
+    //     // decremeant player hp by enemy attackPower
 
 
-    })
+    // })
 
     // function for next enemy
 
